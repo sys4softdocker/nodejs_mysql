@@ -1,0 +1,31 @@
+services:
+  nodejs:
+    image: node:23-alpine
+    container_name: nodejs
+    working_dir: /app
+    volumes:
+      - ./volume_app:/app
+    ports:
+      - "3000:3000"
+    command: sh
+    stdin_open: true
+    tty: true
+    networks:
+      - nodejs_network
+
+  nodejs_mysql:
+    image: mysql:8.4.3
+    container_name: nodejs_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./volume_data:/var/lib/mysql
+    networks:
+      - nodejs_network
+
+networks:
+  nodejs_network:
+    driver: bridge
+    name: nodejs_network
